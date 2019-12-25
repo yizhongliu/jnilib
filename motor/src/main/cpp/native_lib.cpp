@@ -10,6 +10,7 @@
 extern "C"{
 #include "motor_common.h"
 #include "dlp343x.h"
+#include "encoder_test.h"
 }
 
 #define LOG_TAG    "projector_control"
@@ -47,5 +48,37 @@ Java_com_iview_motor_MotorControl_nativeSetKeyStone(
     if (angle >= -45 && angle <= 45) {
         setKeyStone(angle);
     }
+}
+
+extern "C" JNIEXPORT jint
+Java_com_iview_motor_MotorControl_nativeGetEncoderCount(
+        JNIEnv *env,
+        jobject /* this */,jint encoderNum, jint dir) {
+
+    LOGD("nativeGetEncoderCount");
+    int encoder_count;
+    if(encoderNum == 0){
+        encoder_count = getEncoder0Data(dir);
+    }
+    if(encoderNum == 1){
+        encoder_count = getEncoder1Data(dir);
+    }
+    return encoder_count;
+}
+
+extern "C" JNIEXPORT jint
+Java_com_iview_motor_MotorControl_nativeSetEncoderCount(
+        JNIEnv *env,
+        jobject /* this */,jint encoderNum, jint dir, jint value) {
+
+    LOGD("nativeGetEncoderCount");
+    int encoder_count;
+    if(encoderNum == 0){
+        encoder_count = setEncoder0(dir, value);
+    }
+    if(encoderNum == 1){
+        encoder_count = setEncoder1(dir, value);
+    }
+    return encoder_count;
 }
 

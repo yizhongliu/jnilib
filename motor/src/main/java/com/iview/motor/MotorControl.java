@@ -17,6 +17,9 @@ public class MotorControl {
     public static final int PROJECTOR_ON = 1;
     public static final int PROJECTOR_OFF = 0;
 
+    public static final int HEncoder = 1;
+    public static final int VEncoder = 0;
+
     public static int controlMotor(int motorId, int steps, int dir, int delay) {
         return  controlMotor(motorId, steps, dir, delay, true);
     }
@@ -73,6 +76,31 @@ public class MotorControl {
         nativeSetKeyStone(angle);
     }
 
+    /**
+     * get encoder pluses
+     * @param encoderId
+    {
+    @link HEncoder horizontal encoder
+    @link VEncoder vertical encoder
+    }
+     */
+    public static int getEncoderCount(int encoderId) {
+        return nativeGetEncoderCount(encoderId, 0);
+    }
+
+    /**
+     * set encoder pluses
+     * @param encoderId
+    {
+    @link HEncoder horizontal encoder
+    @link VEncoder vertical encoder
+    }
+     * @param value encoder pluses
+     */
+    public static void setEncoderCount(int encoderId, int value) {
+        nativeSetEncoderCount(encoderId, 0, value);
+    }
+
 
     private native static int nativeControlMotor(int motorId, int steps, int dir, int delay, boolean bCheckLimitSwitch);
 
@@ -81,4 +109,7 @@ public class MotorControl {
     private native static void nativeSwitchProjector(int enable);
 
     private native static void nativeSetKeyStone(int angle);
+
+    private native static int nativeGetEncoderCount(int encoderNum, int dir);
+    private native static int nativeSetEncoderCount(int encoderNum, int dir, int value);
 }

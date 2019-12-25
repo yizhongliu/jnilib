@@ -52,6 +52,8 @@ int controlHorizontalMotor(int steps, int dir, int delay, bool bCheckLimitSwitch
         return -1;
     }
 
+
+
     bHorizontalMotorEnable = true;
 
     controlMotorDev(hMotorFd, MOTO_ENABLE_LEFT_RIGHT, MOTOR_DISABLE);  //使能马达
@@ -63,28 +65,14 @@ int controlHorizontalMotor(int steps, int dir, int delay, bool bCheckLimitSwitch
     while (steps--) {
         if (bCheckLimitSwitch == true) {
             if (dir == MOTOR_DIRECTION_LEFT) {
-                if (getPiState(hMotorFd, MOTO_SENSOR_LEFT_RIGHT_1, 0) == 1) {
-                    if(motor_right_pi_state == 0){
-                        motor_left_pi_state = 1;
-                        LOGE("Reach left pi");
-                        break;
-                    }
-                }
-                else{
-                    motor_right_pi_state = 0;
-                    motor_left_pi_state = 0;
+                if (getPiState(hMotorFd, MOTO_SENSOR_LEFT_RIGHT_2, 0) == 1) {
+                    LOGE("Reach left pi");
+                    break;
                 }
             } else if (dir == MOTOR_DIRECTION_RIGHT) {
                 if(getPiState(hMotorFd, MOTO_SENSOR_LEFT_RIGHT_1, 0) == 1){
-                    if(motor_left_pi_state == 0){
-                        motor_right_pi_state = 1;
-                        LOGE("Reach right pi");
-                        break;
-                    }
-                }
-                else{
-                    motor_right_pi_state = 0;
-                    motor_left_pi_state = 0;
+                    LOGE("Reach right pi");
+                    break;
                 }
             }
         }
