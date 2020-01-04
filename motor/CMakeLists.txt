@@ -27,8 +27,9 @@ add_library( # Sets the name of the library.
              src/main/cpp/dlp343x.c
              src/main/cpp/step_motor.cpp
              src/main/cpp/native_lib.cpp
-             src/main/cpp/encoder_test0.c
-             src/main/cpp/encoder_test1.c)
+             src/main/cpp/encoder0.c
+             src/main/cpp/encoder1.c
+             src/main/cpp/control_motor_af.c)
 
 
 # Searches for a specified prebuilt library and stores the path as a

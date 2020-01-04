@@ -109,6 +109,19 @@ Java_com_iview_motor_MotorControl_nativeStopMultiMotors(
     stopMultipleMotors();
 }
 
+extern "C" JNIEXPORT jint
+Java_com_iview_motor_MotorControl_nativeGetMotorSteps(
+        JNIEnv *env,
+        jobject /* this */, jint motorId) {
+    LOGD("nativeGetMotorSteps");
+
+    if (motorId == H_MOTOR_ID) {
+        return getHMotorSteps();
+    } else if (motorId == V_MOTOR_ID) {
+        return getVMotorSteps();
+    }
+}
+
 
 
 

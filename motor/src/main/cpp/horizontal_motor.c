@@ -2,6 +2,7 @@
 // Created by llm on 19-8-13.
 //
 #include "motor_common.h"
+#include "encoder.h"
 
 #include <unistd.h>
 #include <stdio.h>
@@ -25,8 +26,10 @@ static struct timeval tv;
 static struct timeval ts;
 
 
+
 int gHDelay = 2000;
 int gHDirection = 0;
+int hMotorSteps = 0;
 
 extern int motor_left_pi_state;
 extern int motor_right_pi_state;
@@ -66,6 +69,8 @@ int controlHorizontalMotor(int steps, int dir, int delay, bool bCheckLimitSwitch
         if (bCheckLimitSwitch == true) {
             if (dir == MOTOR_DIRECTION_LEFT) {
                 if (getPiState(hMotorFd, MOTO_SENSOR_LEFT_RIGHT_2, 0) == 1) {
+                    setEncoder1(0, 0);
+                    hMotorSteps = 0;
                     LOGE("Reach left pi");
                     break;
                 }
@@ -85,6 +90,12 @@ int controlHorizontalMotor(int steps, int dir, int delay, bool bCheckLimitSwitch
 
     	gpioLevel = !gpioLevel;
     	controlMotorDev(hMotorFd, MOTO_STEP_LEFT_RIGHT, gpioLevel);
+
+    	if (dir == MOTOR_DIRECTION_LEFT) {
+            hMotorSteps--;
+    	} else if (MOTOR_DIRECTION_RIGHT) {
+    	    hMotorSteps++;
+    	}
 
     	motorDelay(delay);
 
@@ -218,5 +229,9 @@ int stopHMotorRunning() {
 
 bool getHMotorEnable() {
     return bHorizontalMotorEnable;
+}
+
+int getHMotorSteps() {
+    return hMotorSteps;
 }
 

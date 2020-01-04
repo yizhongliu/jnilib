@@ -101,6 +101,14 @@ public class MotorControl {
         nativeSetEncoderCount(encoderId, 0, value);
     }
 
+    public static void controlFocusMotor(int steps, int dir) {
+        nativeControlFocusMotor(steps, dir);
+    }
+
+    public static int getMotorSteps(int motorId) {
+        return nativeGetMotorSteps(motorId);
+    }
+
 
     private native static int nativeControlMotor(int motorId, int steps, int dir, int delay, boolean bCheckLimitSwitch);
 
@@ -112,4 +120,7 @@ public class MotorControl {
 
     private native static int nativeGetEncoderCount(int encoderNum, int dir);
     private native static int nativeSetEncoderCount(int encoderNum, int dir, int value);
+    private native static void nativeControlFocusMotor(int steps, int dir);
+
+    private native static int nativeGetMotorSteps(int motorId);
 }

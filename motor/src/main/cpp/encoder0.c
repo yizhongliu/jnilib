@@ -17,7 +17,7 @@
 #include <time.h>
 #include <linux/time.h>
 #include <android/log.h>
-#include "./include/encoder_test.h"
+#include "encoder.h"
 
 #define  LOG_TAG    "test0"
 #define  LOGI(...)  __android_log_print(ANDROID_LOG_INFO, LOG_TAG, __VA_ARGS__)
@@ -118,7 +118,6 @@ int getEncoder0Data(int dir)
     int encoder_count;
     result = inv_init_sysfs_attributes();
     read_sysfs_int(mpu.encoder_value, &encoder_value);
-    LOGD("encoder_value:%d", encoder_value);
     return encoder_value;
 //    read_sysfs_int(mpu.encoder_value, &encoder_value);
 //    LOGD("getEncoder0Data encoder_value:%d", encoder_down);

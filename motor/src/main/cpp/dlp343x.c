@@ -20,8 +20,10 @@
 #define LOGD(...)  __android_log_print(ANDROID_LOG_INFO, LOG_TAG, __VA_ARGS__)
 
 int fd_dlp343x;
+struct dlp343x dlp343x_data;
 int dlp_write_data(unsigned char dlp_addr, unsigned char *dlp_data, unsigned char dlp_count)
 {
+    /*
 	unsigned char  buf_dlp343x[20];
 	int i   = 1;
 	int ret = 0;
@@ -37,13 +39,29 @@ int dlp_write_data(unsigned char dlp_addr, unsigned char *dlp_data, unsigned cha
 	    buf_dlp343x[i++] = dlp_data[j];
 	}
 	ret = write(fd_dlp343x, buf_dlp343x, dlp_count + 1);
-	/*
-	if(state == 1)//read dlp addr
-	{
-		//buf_dlp343x[i] = dlp_addr;
-		ret = read(fd_dlp343x, buf_dlp343x, 1);	
-	}
-	*/
+     */
+    int ret = 0;
+    int  i;
+    fd_dlp343x = open(DLP_DRV, O_RDWR);
+    if(fd_dlp343x == -1){
+        printf("not open dlp_343x!\n");
+        return -1;
+    }
+
+    dlp343x_data.addr     = dlp_addr;
+
+    for(i = 0; i <= dlp_count; i++){
+        dlp343x_data.data[i] = dlp_data[i];
+    }
+    //dlp343x_data.data[0]  = dlp_data[0];
+    dlp343x_data.data_len = dlp_count;
+    if((ioctl(fd_dlp343x, SET_DLP_DATA, &dlp343x_data)) < 0)
+    {
+        return -1;
+    }
+
+    LOGE("dlp write :%d", dlp_addr);
+
 	close(fd_dlp343x);
 	return 1;
 }

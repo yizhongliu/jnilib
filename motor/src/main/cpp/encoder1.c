@@ -17,7 +17,7 @@
 #include <time.h>
 #include <linux/time.h>
 #include <android/log.h>
-#include "./include/encoder_test.h"
+#include "encoder.h"
 #define MAX_SYSFS_NAME_LEN     (100)
 #define MAX_SYSFS_ATTRB        (sizeof(struct sysfs_attrbs) / sizeof(char*))
 #define IIO_SYSFS_PATH      "/sys/devices/platform/encoder_demo1"

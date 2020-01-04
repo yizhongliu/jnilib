@@ -92,4 +92,7 @@ void motorDelay(int delay);
 
 void controlMultipleMotors(int hSteps, int vSteps, int hDir, int vDir, int delay, bool bCheckLimitSwitch);
 void stopMultipleMotors();
+
+int getVMotorSteps();
+int getHMotorSteps();
 #endif

@@ -2,6 +2,7 @@
 // Created by llm on 19-8-13.
 //
 #include "motor_common.h"
+#include "encoder.h"
 
 #include <unistd.h>
 #include <stdio.h>
@@ -26,6 +27,8 @@ static struct timeval ts;
 
 int gVDelay = 2000;
 int gVDirection = 0;
+
+int vMotorSteps = 0;
 
 extern int motor_down_pi_state;
 extern int motor_up_pi_state;
@@ -71,6 +74,9 @@ int controlVerticalMotor(int steps, int dir, int delay, bool bCheckLimitSwitch) 
                     if (motor_up_pi_state == 0) {
                         LOGE("reach down pi");
                         motor_down_pi_state = 1;
+
+                        setEncoder0(0, 0);
+                        vMotorSteps = 0;
                         break;
                     }
                 }
@@ -90,6 +96,12 @@ int controlVerticalMotor(int steps, int dir, int delay, bool bCheckLimitSwitch) 
     	controlMotorDev(vMotorFd, MOTO_STEP_UP_DOWN, gpioLevel);
 
     	motorDelay(delay);
+
+    	if (dir == MOTOR_DIRECTION_DOWN) {
+    	    vMotorSteps--;
+    	} else if (dir == MOTOR_DIRECTION_UP) {
+    	    vMotorSteps++;
+    	}
 
         if (bVerticalMotorEnable == false) {
             break;
@@ -161,7 +173,7 @@ int startVMotorRunning(bool bCheckLimitSwitch) {
                  } else if (dir == MOTOR_DIRECTION_DOWN) {
                      if (motor_up_pi_state == 0) {
                          motor_down_pi_state = 1;
-
+                         vMotorSteps = 0;
                          if (bVerticalMotorEnable == false) {
                              break;
                          }
@@ -213,5 +225,9 @@ int stopVMotorRunning() {
 
 bool getVMotorEnable() {
     return bVerticalMotorEnable;
+}
+
+int getVMotorSteps() {
+    return vMotorSteps;
 }
 

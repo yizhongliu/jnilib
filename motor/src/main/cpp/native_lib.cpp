@@ -10,7 +10,8 @@
 extern "C"{
 #include "motor_common.h"
 #include "dlp343x.h"
-#include "encoder_test.h"
+#include "encoder.h"
+#include "control_motor_af.h"
 }
 
 #define LOG_TAG    "projector_control"
@@ -55,7 +56,6 @@ Java_com_iview_motor_MotorControl_nativeGetEncoderCount(
         JNIEnv *env,
         jobject /* this */,jint encoderNum, jint dir) {
 
-    LOGD("nativeGetEncoderCount");
     int encoder_count;
     if(encoderNum == 0){
         encoder_count = getEncoder0Data(dir);
@@ -71,7 +71,6 @@ Java_com_iview_motor_MotorControl_nativeSetEncoderCount(
         JNIEnv *env,
         jobject /* this */,jint encoderNum, jint dir, jint value) {
 
-    LOGD("nativeGetEncoderCount");
     int encoder_count;
     if(encoderNum == 0){
         encoder_count = setEncoder0(dir, value);
@@ -80,5 +79,14 @@ Java_com_iview_motor_MotorControl_nativeSetEncoderCount(
         encoder_count = setEncoder1(dir, value);
     }
     return encoder_count;
+}
+
+extern "C" JNIEXPORT void
+Java_com_iview_motor_MotorControl_nativeControlFocusMotor(
+        JNIEnv *env,
+        jobject /* this */,jint steps, jint dir) {
+
+    LOGE("nativeControlFocusMotor");
+    control_drv8846_motor_af(steps, dir);
 }
 
