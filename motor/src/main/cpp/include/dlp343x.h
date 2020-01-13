@@ -15,6 +15,6 @@ int controlProjectorCloseOpen(int powerState);
 #define SET_DLP_DATA			 _IOWR(MOTOR_MAGIC, 0x8, struct dlp343x)
 
 int setKeyStone(int angle);
-
+void setProjectionMode(int mode);
 
 #endif

@@ -134,3 +134,26 @@ int setKeyStone(int angle) {
     ret = dlp_write_data(writeAddr, sendData, 2);
     return ret;
 }
+
+void setProjectionMode(int mode) {
+    unsigned char sendData[1];
+    switch (mode) {
+        case 0:
+            sendData[0] = 0x00;
+            dlp_write_data(0x14, sendData, 1);
+            break;
+        case 1:
+            sendData[0] = 0x02;
+            dlp_write_data(0x14, sendData, 1);
+            break;
+        case 2:
+            sendData[0] = 0x04;
+            dlp_write_data(0x14, sendData, 1);
+            break;
+        case 3:
+            sendData[0] = 0x06;
+            dlp_write_data(0x14, sendData, 1);
+            break;
+
+    }
+}

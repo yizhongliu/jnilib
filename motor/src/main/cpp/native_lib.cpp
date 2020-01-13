@@ -90,3 +90,25 @@ Java_com_iview_motor_MotorControl_nativeControlFocusMotor(
     control_drv8846_motor_af(steps, dir);
 }
 
+extern "C" JNIEXPORT void
+Java_com_iview_motor_MotorControl_nativeSetProjectionMode(
+        JNIEnv *env,
+        jobject /* this */,jint mode) {
+
+    LOGE("nativeSetProjectionMode");
+    setProjectionMode(mode);
+}
+
+extern "C" JNIEXPORT void
+Java_com_iview_motor_MotorControl_nativeSetProjectorPower(
+        JNIEnv *env,
+        jobject /* this */,jint powerState) {
+
+    LOGD("nativeSwitchProjector");
+
+    controlProjectorCloseOpen(powerState);
+
+}
+
+
+

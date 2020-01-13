@@ -30,6 +30,9 @@ int gVDirection = 0;
 
 int vMotorSteps = 0;
 
+int reachUpPiConut = 0;
+int reachDownPiCount = 0;
+
 extern int motor_down_pi_state;
 extern int motor_up_pi_state;
 
@@ -63,27 +66,38 @@ int controlVerticalMotor(int steps, int dir, int delay, bool bCheckLimitSwitch) 
   //      LOGE(" step --");
         if (bCheckLimitSwitch == true) {
             if(getPiState(vMotorFd, MOTO_SENSOR_UP_DOWN_2, 0) == 1) {
-                LOGE("reach up/down pi");
+              //  LOGE("reach up/down pi");
                 if (dir == MOTOR_DIRECTION_UP) {
                     if (motor_down_pi_state == 0) {
-                        LOGE("reach up pi");
-                        motor_up_pi_state = 1;
-                        break;
+                        if (reachUpPiConut > 15 && reachDownPiCount == 0) {
+                            LOGE("reach up pi count: %d", reachUpPiConut);
+                            motor_up_pi_state = 1;
+                            break;
+                        }
+
+                        reachUpPiConut++;
                     }
                 } else if (dir == MOTOR_DIRECTION_DOWN) {
                     if (motor_up_pi_state == 0) {
-                        LOGE("reach down pi");
-                        motor_down_pi_state = 1;
+                        if (reachDownPiCount > 15 && reachUpPiConut == 0) {
+                            LOGE("reach down pi count: %d", reachDownPiCount);
+                            motor_down_pi_state = 1;
 
-                        setEncoder0(0, 0);
-                        vMotorSteps = 0;
-                        break;
+                            setEncoder0(0, 0);
+                            vMotorSteps = 0;
+                            break;
+                        }
+
+                        reachDownPiCount++;
                     }
                 }
             } else {
                 //          LOGE(" unset pi state");
                 motor_up_pi_state = 0;
                 motor_down_pi_state = 0;
+
+                reachUpPiConut = 0;
+                reachDownPiCount = 0;
             }
         }
 
@@ -106,6 +120,7 @@ int controlVerticalMotor(int steps, int dir, int delay, bool bCheckLimitSwitch) 
         if (bVerticalMotorEnable == false) {
             break;
         }
+        LOGE("vMotorSteps: %d, reachCount %d, %d", vMotorSteps, reachUpPiConut, reachDownPiCount);
     }
 
     controlMotorDev(vMotorFd, MOTO_ENABLE_UP_DOWN, MOTOR_ENABLE); //锁马达

@@ -20,6 +20,9 @@ public class MotorControl {
     public static final int HEncoder = 1;
     public static final int VEncoder = 0;
 
+    public static final int POWER_ON = 1;
+    public static final int POWER_OFF = 0;
+
     public static int controlMotor(int motorId, int steps, int dir, int delay) {
         return  controlMotor(motorId, steps, dir, delay, true);
     }
@@ -109,6 +112,14 @@ public class MotorControl {
         return nativeGetMotorSteps(motorId);
     }
 
+    public static void setProjectionMode(int mode) {
+        nativeSetProjectionMode(mode);
+    }
+
+    public static void setProjectorPower(int powerState) {
+        nativeSetProjectorPower(powerState);
+    }
+
 
     private native static int nativeControlMotor(int motorId, int steps, int dir, int delay, boolean bCheckLimitSwitch);
 
@@ -123,4 +134,8 @@ public class MotorControl {
     private native static void nativeControlFocusMotor(int steps, int dir);
 
     private native static int nativeGetMotorSteps(int motorId);
+
+    private native static void nativeSetProjectionMode(int mode);
+
+    private native static void nativeSetProjectorPower(int powerState);
 }
